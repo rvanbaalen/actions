@@ -13,9 +13,10 @@ inputs:
     description: Where in the repo the Dockerfile is located
     default: .
     required: false
-  image-tag:
-    description: The tag for this image
-    required: true
+  make-latest:
+    description: Create a latest tag of this image
+    required: false
+    default: false
     
 outputs:
   imageUrl:
