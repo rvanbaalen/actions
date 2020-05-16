@@ -7,8 +7,10 @@ async function run() {
   const username = process.env.GITHUB_ACTOR;
   const imageName = core.getInput("image-name").toLowerCase();
   const githubRepo = process.env.GITHUB_REPOSITORY.toLowerCase();
-  const tag = core.getInput('image-tag').toLowerCase();
+  const tag = process.env.GITHUB_SHA;
   const fullImageReference = `docker.pkg.github.com/${githubRepo}/${imageName}:${tag}`;
+  const makeLatest = !!core.getInput('make-latest') || false;
+  
   try {
     await exec.exec(
       `docker login docker.pkg.github.com -u ${username} -p ${token}`
@@ -23,6 +25,17 @@ async function run() {
   } catch (err) {
     core.setFailed(`action failed with error: ${err}`);
   }
+  
+  if (makeLatest) {
+    try {
+      await exec.exec(
+        `docker build -t docker.pkg.github.com/${githubRepo}/${imageName}:latest ${dockerfileLocation}`
+      );
+    } catch (err) {
+      core.setFailed(`action failed with error: ${err}`);
+    }
+  }
+  
   try {
     await exec.exec(`docker push ${fullImageReference}`);
   } catch (err) {
