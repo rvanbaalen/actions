@@ -13,6 +13,10 @@ inputs:
     description: Where in the repo the Dockerfile is located
     default: .
     required: false
+  tag:
+    description: The tag for this image
+    default: {{ GITHUB_SHA }}
+    required: false
     
 outputs:
   imageUrl:
