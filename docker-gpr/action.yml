@@ -15,7 +15,6 @@ inputs:
     required: false
   image-tag:
     description: The tag for this image
-    default: ${{ env.GITHUB_SHA }}
     required: true
     
 outputs:
