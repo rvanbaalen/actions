@@ -13,7 +13,7 @@ async function run() {
   
   try {
     await exec.exec(
-      `docker login docker.pkg.github.com -u ${username} -p ${token}`
+      `echo "${token}" | docker login docker.pkg.github.com -u ${username} --password-stdin`
     );
   } catch (err) {
     core.setFailed(`action failed with error: ${err}`);
